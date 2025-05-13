@@ -1,7 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 const { Maze } = require('./maze')
-const { solve } = require('.')
+const { solve: dijkstra } = require('.')
+const { solve: greedy } = require('./greedy')
 
 const importMaze = file => {
     const fileContent = fs
@@ -19,15 +20,45 @@ const importMaze = file => {
     })
 }
 
+const displayResults = ({ maze, startLocation, solutions }) => {
+    for (let i = solutions.length - 1; i >= 0; i--) {
+        const { path, distance, jumps } = solutions[i]
+        console.log(`Saída ${i + 1}, score ${distance}, ${jumps} saltos:`)
+        console.log(maze.toString({ startLocation, path }))
+    }
+
+    console.log(
+        `${solutions.length} saída${
+            solutions.length === 1 ? '' : 's'
+        } encontrada${solutions.length === 1 ? '' : 's'}.`
+    )
+
+    if (solutions.length === 0) {
+        console.log('Nenhuma saída encontrada.')
+    } else if (solutions.length === 1) {
+        console.log(
+            `Saída tem score ${solutions[0].distance} e ${solutions[0].jumps} saltos.`
+        )
+    } else {
+        console.log(
+            `Score varia de ${solutions[0].distance} (${
+                solutions[0].jumps
+            }) a ${solutions.at(-1).distance} (${solutions.at(-1).jumps}).`
+        )
+    }
+
+    console.log('\n')
+}
+
 const file = process.argv[2]
 const startLocation = process.argv[3].split(',').map(Number)
+const strategy = process.argv[4] ?? 'all'
 
 if (!file) {
     console.error('Please provide a file name')
     process.exit(1)
 }
 
-console.time('Tempo total')
 console.time('Importação')
 
 let maze
@@ -40,53 +71,42 @@ try {
 
 console.timeEnd('Importação')
 
-try {
-    console.time('Solução')
+console.log(maze.toString({ startLocation }))
 
-    const solutions = solve({
-        maze,
-        startLocation,
-    })
+if (strategy === 'all' || strategy === 'dijkstra') {
+    try {
+        console.time('Dijkstra')
 
-    console.timeEnd('Solução')
-    console.timeEnd('Tempo total')
-    console.log()
+        const solutions = dijkstra({
+            maze,
+            startLocation,
+        })
 
-    console.log(maze.toString({ startLocation }))
+        console.timeEnd('Dijkstra')
 
-    // console.log(
-    //     JSON.stringify(
-    //         solutions.map(s => ({ ...s, path: s.path.map(l => l.join(',')) })),
-    //         null,
-    //         2
-    //     )
-    // )
-
-    for (let i = solutions.length - 1; i >= 0; i--) {
-        const { path, distance } = solutions[i]
-        console.log(`Saída ${i + 1}, score ${distance}:`)
-        console.log(maze.toString({ startLocation, path }))
+        displayResults({ maze, startLocation, solutions })
+    } catch (error) {
+        console.error('Error running maze:', error)
+        process.exit(1)
     }
+}
 
-    console.log(
-        `${solutions.length} saída${
-            solutions.length === 1 ? '' : 's'
-        } encontrada${solutions.length === 1 ? '' : 's'}.`
-    )
-    if (solutions.length === 0) {
-        console.log('Nenhuma saída encontrada.')
-    } else if (solutions.length === 1) {
-        console.log(`Saída tem score ${solutions[0].distance}.`)
-    } else {
-        console.log(
-            `Score varia de ${solutions[0].distance} a ${
-                solutions.at(-1).distance
-            }.`
-        )
+if (strategy === 'all' || strategy === 'greedy') {
+    try {
+        console.time('Greedy')
+
+        const solutions = greedy({
+            maze,
+            startLocation,
+        })
+
+        console.timeEnd('Greedy')
+
+        displayResults({ maze, startLocation, solutions })
+    } catch (error) {
+        console.error('Error running maze:', error)
+        process.exit(1)
     }
-} catch (error) {
-    console.error('Error running maze:', error)
-    process.exit(1)
 }
 
 /*

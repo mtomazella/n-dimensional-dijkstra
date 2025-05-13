@@ -18,6 +18,7 @@ exports.solve = ({ maze, startLocation }) => {
     /**
      * @typedef {t.Node & {
      *  distance: number,
+     *  jumps: number,
      *  completelyExplored: boolean,
      *  neighbors: t.Node[]
      *  path: t.Location[]
@@ -30,6 +31,7 @@ exports.solve = ({ maze, startLocation }) => {
     map[locationToKey(startLocation)] = {
         ...maze.node(startLocation),
         distance: 0,
+        jumps: 0,
         completelyExplored: false,
         neighbors: maze.getNeighbors(startLocation),
         path: [],
@@ -67,6 +69,7 @@ exports.solve = ({ maze, startLocation }) => {
             const searchNode = {
                 ...node,
                 distance: nodeToSearch.distance + node.weight,
+                jumps: nodeToSearch.jumps + 1,
                 completelyExplored: false,
                 neighbors: maze.getNeighbors(neighbor.location),
                 path: [...nodeToSearch.path, nodeToSearch.location],
@@ -104,6 +107,7 @@ exports.solve = ({ maze, startLocation }) => {
         return {
             location: node.location,
             distance: node.distance,
+            jumps: node.jumps,
             path: node.path,
         }
     })
