@@ -1,0 +1,88 @@
+Rodando labirinto 3d/1.mz com estratégia all e ponto de partida 0,0,0
+
+Comando para execução:
+node run.js 3d/1.mz 0,0,0 all
+
+
+Importação: 1.951ms
+🯅####
+    #
+### #
+#   #
+# ###
+#    
+
+#####
+#####
+#####
+#####
+#####
+#### 
+
+*####
+    #
+### #
+#   #
+# ###
+#    
+
+
+
+Dijkstra: 4.846ms
+Saída 1, score 28, 28 saltos:
+🯅####
+1234#
+###5#
+#876#
+#9###
+#0123
+
+#####
+#####
+#####
+#####
+#####
+####4
+
+*####
+7654#
+###3#
+#012#
+#9###
+#8765
+
+
+
+1 saída encontrada.
+Saída tem score 28 e 28 saltos.
+
+
+Greedy: 1.381ms
+Saída 1, score 28, 28 saltos:
+🯅####
+1234#
+###5#
+#876#
+#9###
+#0123
+
+#####
+#####
+#####
+#####
+#####
+####4
+
+*####
+7654#
+###3#
+#012#
+#9###
+#8765
+
+
+
+1 saída encontrada.
+Saída tem score 28 e 28 saltos.
+
+

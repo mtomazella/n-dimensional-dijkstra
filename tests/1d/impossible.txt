@@ -1,0 +1,14 @@
+
+Importação: 3.846ms
+#🯅        #       *#
+
+Dijkstra: 0.771ms
+0 saídas encontradas.
+Nenhuma saída encontrada.
+
+
+Greedy: 0.358ms
+0 saídas encontradas.
+Nenhuma saída encontrada.
+
+

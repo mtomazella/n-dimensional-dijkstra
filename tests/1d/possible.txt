@@ -1,0 +1,20 @@
+
+Importação: 4.554ms
+#🯅                *#
+
+Dijkstra: 1.955ms
+Saída 1, score 17, 17 saltos:
+#🯅1234567890123456*#
+
+1 saída encontrada.
+Saída tem score 17 e 17 saltos.
+
+
+Greedy: 0.377ms
+Saída 1, score 17, 17 saltos:
+#🯅1234567890123456*#
+
+1 saída encontrada.
+Saída tem score 17 e 17 saltos.
+
+

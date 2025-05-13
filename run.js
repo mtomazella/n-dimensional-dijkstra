@@ -59,6 +59,14 @@ if (!file) {
     process.exit(1)
 }
 
+console.log(
+    `Rodando labirinto ${file} com estratégia ${strategy} e ponto de partida ${startLocation}`
+)
+console.log('')
+console.log('Comando para execução:')
+console.log(`node run.js ${file} ${startLocation} ${strategy}`)
+console.log('')
+
 console.time('Importação')
 
 let maze
