@@ -7,7 +7,7 @@ const tiles = {
 }
 
 class Maze {
-    constructor({ dimensions, proportions, data: rawData = '' }) {
+    constructor({ dimensions, proportions, data: rawData = '', weights = '' }) {
         this.dimensions = dimensions
         this.proportions = proportions
 
@@ -29,6 +29,18 @@ class Maze {
 
         this.rawData = rawData.split('')
 
+        if (weights) {
+            weights = weights.replaceAll(' ', '')
+            weights = weights.replaceAll('\n', '')
+
+            if (weights.length !== rawData.length) {
+                throw new Error('Invalid weights length')
+            }
+
+            weights = weights.split('').map(Number)
+            this.weights = weights
+        }
+
         const buildMultiDimMatrix = (data, dimensions) => {
             let dataIndex = 0
 
@@ -36,11 +48,14 @@ class Maze {
                 const size = dimensions[0]
                 if (dimensions.length === 1) {
                     return Array.from({ length: size }, (value, key) => {
-                        const tile = data[dataIndex++]
+                        const index = dataIndex
+                        const tile = data[index]
+                        const weight = weights[index] ?? 1
+                        dataIndex++
                         return {
                             location: [key, ...position],
                             tile,
-                            weight: 1,
+                            weight,
                             isWall: tile === tiles.wall,
                             isExit: tile === tiles.exit,
                         }

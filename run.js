@@ -15,6 +15,7 @@ const importMaze = file => {
         dimensions,
         proportions,
         data: fileContent[dimensions + 1],
+        weights: fileContent[dimensions + 2],
     })
 }
 
